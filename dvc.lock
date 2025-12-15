@@ -1,0 +1,19 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+    - path: src/preprocess.py
+      hash: md5
+      md5: 81e83e5e805af985d85dd2c13228661b
+      size: 5331
+    params:
+      params.yaml:
+        preprocess:
+          root_dir: data
+          processed_dir: data/processed
+    outs:
+    - path: data/processed/preprocessing_done.txt
+      hash: md5
+      md5: 6b2ded51d81a4403d8a4bd25fa1e57ee
+      size: 4
