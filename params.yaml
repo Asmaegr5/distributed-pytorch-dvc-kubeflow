@@ -1,0 +1,12 @@
+preprocess:
+  root_dir: "data"
+  processed_dir: "data/processed"
+
+train:
+  batch_size: 64
+  epochs: 5
+  lr: 0.01
+  momentum: 0.5
+  seed: 42
+  save_path: "model.pth"
+  backend: "gloo" # Use 'nccl' for GPU, 'gloo' for CPU/Github Actions

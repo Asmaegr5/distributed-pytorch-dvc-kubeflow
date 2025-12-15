@@ -1,0 +1,30 @@
+stages:
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+      - src/preprocess.py
+    params:
+      - preprocess
+    outs:
+      - data/processed/preprocessing_done.txt:
+          cache: false
+
+  train:
+    cmd: python src/train_ddp.py
+    deps:
+      - src/train_ddp.py
+      - src/model.py
+      - data/processed/preprocessing_done.txt
+    params:
+      - train
+    outs:
+      - model.pth
+
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+      - src/evaluate.py
+      - model.pth
+    metrics:
+      - eval_metrics.txt:
+          cache: false
