@@ -31,7 +31,15 @@ def train(rank, world_size, params):
         transforms.Normalize((0.1307,), (0.3081,))
     ])
     
-    dataset = datasets.MNIST(params['preprocess']['root_dir'], train=True, transform=transform, download=False)
+    # Only download on rank 0
+    download = (rank == 0)
+    if rank != 0 and setup_distributed:
+        dist.barrier() # Wait for rank 0 to download
+
+    dataset = datasets.MNIST(params['preprocess']['root_dir'], train=True, transform=transform, download=download)
+    
+    if rank == 0 and setup_distributed:
+        dist.barrier() # Signal other ranks that download is done
     
     if setup_distributed:
         sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank)
